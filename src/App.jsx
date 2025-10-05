@@ -4,11 +4,16 @@ import './App.css'
 function App() {
   const [score, setScore] = useState(20);
   const [highScore, setHighScore] = useState(0);
-
+  const [secretNumber, setSecretNumber] = useState(Math.floor(Math.random() * 20) + 1);
+  const [isGameOver, setIsGameOver] = useState(false);
+  
   const again = () => {
-    setScore(20)
+    setScore(20);
     setHighScore(0);
+    setSecretNumber(Math.floor(Math.random() * 20) + 1);
+    setIsGameOver(false);
   }
+  
 
 
   return (
@@ -22,7 +27,7 @@ function App() {
         >Guess My Number!</h1>
         <hr className='absolute bottom-100 w-full h-1.75 bg-white border-0'/>
         <div className='bg-white px-12 py-4 absolute bottom-85 ml-175 text-8xl font-semibold'
-        >?</div>
+        >{isGameOver ? secretNumber : '?'}</div>
         <input 
         type='number' 
         className='w-60 px-6 py-4 ml-15 border-4 border-white absolute bottom-45 text-white text-5xl font-semibold bg-transparent text-center caret-white'/>
