@@ -6,14 +6,50 @@ function App() {
   const [highScore, setHighScore] = useState(0);
   const [secretNumber, setSecretNumber] = useState(Math.floor(Math.random() * 20) + 1);
   const [isGameOver, setIsGameOver] = useState(false);
+  const [myNumber, setMyNumber] = useState('');
+  const [msg, setMsg] = useState('Start guessing...')
   
   const again = () => {
     setScore(20);
     setHighScore(0);
     setSecretNumber(Math.floor(Math.random() * 20) + 1);
     setIsGameOver(false);
+    setMyNumber('');
+    setMsg('Start guessing...')
   }
   
+  const winCondition = () => {
+    const mynumber = Number(myNumber)
+
+    if(!mynumber)
+    {
+      setMsg("Enter a number between 1 and 20!")
+      return;
+    }
+
+    if(mynumber === secretNumber)
+    {
+      if(score > highScore)
+      {
+        setHighScore(score);
+      }
+      setIsGameOver(true);
+      setMsg('You Won..!')
+    }
+    else if(score > 1)
+    {
+      setMsg(mynumber > secretNumber ? 'Too High..!' : 'Too Low..!')
+      setScore(score - 1);
+    }
+
+    else
+    {
+      setIsGameOver(true);
+      setMsg('You Lost..!')
+      setScore(0);
+      setMyNumber(''); 
+    }
+  }
 
 
   return (
@@ -30,10 +66,15 @@ function App() {
         >{isGameOver ? secretNumber : '?'}</div>
         <input 
         type='number' 
+        value={myNumber}
+        disabled={isGameOver}
+        onChange={(e) => setMyNumber(e.target.value)}
         className='w-60 px-6 py-4 ml-15 border-4 border-white absolute bottom-45 text-white text-5xl font-semibold bg-transparent text-center caret-white'/>
         <button className='text-black bg-white ml-25 font-semibold text-3xl px-8 py-2 absolute bottom-25 cursor-pointer transition-transform hover:bg-amber-50'
+        onClick={winCondition}
+        disabled={isGameOver}
         >Check!</button>
-        <h1 className='absolute bottom-65 ml-250 text-3xl font-semibold text-white'>Start guessing...</h1>
+        <h1 className='absolute bottom-65 ml-250 text-3xl font-semibold text-white'>{msg}</h1>
         <h1 className='absolute text-white font-semibold text-3xl bottom-45 ml-250'>Score: {score}</h1>
         <h1 className='absolute text-white font-semibold text-3xl bottom-33 ml-250'>Highscore: {highScore}</h1>
       </div>
