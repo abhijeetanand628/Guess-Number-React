@@ -2,28 +2,35 @@ import { useState } from 'react'
 import './App.css'
 
 function App() {
+  const [bgColor, setBgColor] = useState('#212121');
   const [score, setScore] = useState(20);
   const [highScore, setHighScore] = useState(0);
   const [secretNumber, setSecretNumber] = useState(Math.floor(Math.random() * 20) + 1);
   const [isGameOver, setIsGameOver] = useState(false);
   const [myNumber, setMyNumber] = useState('');
-  const [msg, setMsg] = useState('Start guessing...')
+  const [msg, setMsg] = useState('Start guessing...');
   
   const again = () => {
     setScore(20);
-    setHighScore(0);
     setSecretNumber(Math.floor(Math.random() * 20) + 1);
     setIsGameOver(false);
     setMyNumber('');
     setMsg('Start guessing...')
+    setBgColor('#212121')
   }
   
   const winCondition = () => {
     const mynumber = Number(myNumber)
 
-    if(!mynumber)
+    if(myNumber === '')
     {
-      setMsg("Enter a number between 1 and 20!")
+      setMsg("Enter a number!")
+      return;
+    }
+
+    else if(mynumber > 20 || mynumber < 1)
+    {
+      setMsg('Enter a number between 1 and 20!')
       return;
     }
 
@@ -35,6 +42,8 @@ function App() {
       }
       setIsGameOver(true);
       setMsg('You Won..!')
+      setMyNumber(''); 
+      setBgColor('#16a34a')
     }
     else if(score > 1)
     {
@@ -48,13 +57,15 @@ function App() {
       setMsg('You Lost..!')
       setScore(0);
       setMyNumber(''); 
+      setBgColor('#dc2626')
     }
   }
 
-
   return (
     <>
-      <div className='bg-[#212121] h-screen w-full relative'>
+      <div 
+      style={{ backgroundColor: bgColor }}
+      className="h-screen w-full relative transition-colors duration-300">
         <h1 className='absolute top-5 text-white ml-335 text-xl font-semibold'>(Between 1 and 20)</h1>
         <button className='ml-5 mt-5 px-9 py-2 bg-white text-2xl font-semibold text-black cursor-pointer transition-transform hover:bg-amber-50'
         onClick={again}
