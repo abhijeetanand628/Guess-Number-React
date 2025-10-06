@@ -4,7 +4,7 @@ import './App.css'
 function App() {
   const [bgColor, setBgColor] = useState('#212121');
   const [score, setScore] = useState(20);
-  const [highScore, setHighScore] = useState(0);
+  const [highScore, setHighScore] = useState(Number(localStorage.getItem('highScore')) || 0);
   const [secretNumber, setSecretNumber] = useState(Math.floor(Math.random() * 20) + 1);
   const [isGameOver, setIsGameOver] = useState(false);
   const [myNumber, setMyNumber] = useState('');
@@ -17,6 +17,11 @@ function App() {
     setMyNumber('');
     setMsg('Start guessing...')
     setBgColor('#212121')
+  }
+
+  const reset = () => {
+    localStorage.removeItem('highScore');
+    setHighScore(0);
   }
   
   const winCondition = () => {
@@ -39,6 +44,7 @@ function App() {
       if(score > highScore)
       {
         setHighScore(score);
+        localStorage.setItem('highScore', score);
       }
       setIsGameOver(true);
       setMsg('You Won..!')
@@ -88,6 +94,9 @@ function App() {
         <h1 className='absolute bottom-65 ml-250 text-3xl font-semibold text-white'>{msg}</h1>
         <h1 className='absolute text-white font-semibold text-3xl bottom-45 ml-250'>Score: {score}</h1>
         <h1 className='absolute text-white font-semibold text-3xl bottom-33 ml-250'>Highscore: {highScore}</h1>
+        <button className='text-black bg-white ml-205 font-semibold text-3xl px-3 py-2 absolute bottom-15 cursor-pointer transition-transform hover:bg-amber-50'
+        onClick={reset}
+        >Reset Highscore</button>
       </div>
     </>
   )
