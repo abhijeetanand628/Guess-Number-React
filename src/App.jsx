@@ -29,7 +29,7 @@ function App() {
     setMsg('Highscore reset!');
     setTimeout(() => 
       setMsg('Start guessing...'), 
-    1500)
+    1000)
   }
   
   const winCondition = () => {
